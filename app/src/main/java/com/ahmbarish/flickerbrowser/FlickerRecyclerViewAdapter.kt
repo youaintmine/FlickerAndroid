@@ -10,13 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-
+//This is the view holder model
 class FlickerImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     var thumbnail: ImageView = view.findViewById(R.id.thumbnail)
     var title : TextView = view.findViewById(R.id.titleView)
 }
+
 class FlickerRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerView.Adapter<FlickerImageViewHolder>() {
-    private val TAG = "FlickerViewAdapter"
+    private val TAG = "FlickerRecyclerViewAdapt"
 
     fun loadNewData(newPhotos : List<Photo>) {
         photoList = newPhotos
@@ -35,7 +36,7 @@ class FlickerRecyclerViewAdapter(private var photoList: List<Photo>) : RecyclerV
     }
 
     override fun onBindViewHolder(holder: FlickerImageViewHolder, position: Int) {
-        //called by layout manafger when it wants new data in an existing view
+        //called by layout manager when it wants new data in an existing view
 
         val photoItem = photoList[position]
         Log.d(TAG,".onBindView Holder : ${photoItem.title} --> $position")

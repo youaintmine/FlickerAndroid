@@ -7,14 +7,15 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_main.*
 import java.lang.Exception
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlickerJsonData.OnDataAvailable {
+class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlickerJsonData.OnDataAvailable, RecyclerItemClickListen.OnRecyclerClickListener {
     private val TAG = "MainActivity"
 
     private val flickerRecyclerViewAdapter = FlickerRecyclerViewAdapter(ArrayList())
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
         setSupportActionBar(findViewById(R.id.toolbar))
 
         recycler_view.layoutManager = LinearLayoutManager(this)
+        recycler_view.addOnItemTouchListener(RecyclerItemClickListen(this, recycler_view, this))
         recycler_view.adapter = flickerRecyclerViewAdapter
 
         val url = createUri("https://www.flickr.com/services/feeds/photos_public.gne","android,oreo","en-us", true)
@@ -36,7 +38,15 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
         Log.d(TAG, "onCreate ends")
     }
 
+    override fun onItemClick(view: View?, pos: Int) {
+        Log.d(TAG, ".onItemClick starts")
+        Toast.makeText(this,"Normal tap at $pos", Toast.LENGTH_SHORT).show()
+    }
 
+    override fun onItemHold(view: View, pos: Int) {
+        Log.d(TAG, ".onItemHold starts")
+        Toast.makeText(this, "Long Hold Tap at $pos", Toast.LENGTH_SHORT).show()
+    }
 
     fun createUri(baseUrl : String, searchCriteria : String, lang : String, matchAll : Boolean) : String {
         Log.d(TAG," createUri starts")
