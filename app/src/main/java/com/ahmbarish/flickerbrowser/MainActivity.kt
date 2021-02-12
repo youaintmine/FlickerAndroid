@@ -1,6 +1,7 @@
 package com.ahmbarish.flickerbrowser
 
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +16,7 @@ import java.lang.Exception
 
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlickerJsonData.OnDataAvailable, RecyclerItemClickListen.OnRecyclerClickListener {
+class MainActivity : BaseClass(), GetRawData.OnDownloadComplete, GetFlickerJsonData.OnDataAvailable, RecyclerItemClickListen.OnRecyclerClickListener {
     private val TAG = "MainActivity"
 
     private val flickerRecyclerViewAdapter = FlickerRecyclerViewAdapter(ArrayList())
@@ -24,7 +25,8 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
         Log.d(TAG,"onCreate called")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
+
+        activateToolbar(false)
 
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.addOnItemTouchListener(RecyclerItemClickListen(this, recycler_view, this))
@@ -45,7 +47,13 @@ class MainActivity : AppCompatActivity(), GetRawData.OnDownloadComplete, GetFlic
 
     override fun onItemHold(view: View, pos: Int) {
         Log.d(TAG, ".onItemHold starts")
-        Toast.makeText(this, "Long Hold Tap at $pos", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Long Hold Tap at $pos", Toast.LENGTH_SHORT).show()
+        val photo = flickerRecyclerViewAdapter.getPhoto(pos)
+        if (photo != null) {
+            val intent = Intent(this, PhotoDetailsActivity::class.java)
+            intent.putExtra(PHOTO_TRANSFER, photo)
+            startActivity(intent)
+        }
     }
 
     fun createUri(baseUrl : String, searchCriteria : String, lang : String, matchAll : Boolean) : String {
