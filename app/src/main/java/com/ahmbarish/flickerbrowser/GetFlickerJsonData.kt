@@ -6,6 +6,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.lang.Exception
 
+@Suppress("DEPRECATION")
 class GetFlickerJsonData(private val listener: OnDataAvailable) : AsyncTask<String, Void, ArrayList<Photo>>() {
 
     private val TAG = "GetFlickerJsoData"

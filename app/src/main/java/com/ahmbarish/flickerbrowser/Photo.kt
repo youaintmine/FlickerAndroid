@@ -14,6 +14,8 @@ class Photo(var title: String, var author: String,var authorId: String,var link:
         return "Photo(title='$title', author='$author', authorId='$authorId', link='$link', tags='$tags', image='$image')"
     }
 
+
+
     @Throws(IOException::class)
     private fun writeObject(out : java.io.ObjectOutputStream) {
         Log.d("Photo","writeObject called")
